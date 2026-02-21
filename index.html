@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FilmFinder - Your personal movie recommendation assistant. Discover, search, and save your favorite films." />
+  <meta name="theme-color" content="#6366f1" />
+  <title>FilmFinder | Personal Movie Recommendations</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='grad' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%236366f1;stop-opacity:1' /><stop offset='100%' style='stop-color:%23ec4899;stop-opacity:1' /></linearGradient></defs><rect fill='url(%23grad)' width='100' height='100'/><circle cx='25' cy='30' r='12' fill='%23fbbf24'/><circle cx='50' cy='28' r='14' fill='%23fbbf24'/><circle cx='72' cy='32' r='11' fill='%23fbbf24'/><circle cx='28' cy='55' r='13' fill='%23fbbf24'/><circle cx='50' cy='58' r='15' fill='%23fbbf24'/><circle cx='70' cy='56' r='12' fill='%23fbbf24'/><path d='M35 15 Q50 5 65 15' stroke='%23fbbf24' stroke-width='3' fill='none' stroke-linecap='round'/></svg>" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon"><i class="fas fa-film"></i></span>
+        <h1>FilmFinder</h1>
+      </div>
+      <div class="nav-links">
+        <button class="nav-btn active" data-category="popular">Popular</button>
+        <button class="nav-btn" data-category="top_rated">Top Rated</button>
+        <button class="nav-btn" data-category="upcoming">Upcoming</button>
+        <button class="nav-btn favorites-btn" title="View Favorites"><i class="fas fa-heart"></i> <span class="fav-count">0</span></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Search Section -->
+  <section class="search-section">
+    <div class="search-container">
+      <div class="search-wrapper">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search millions of movies..." />
+        <span class="search-icon"><i class="fas fa-search"></i></span>
+      </div>
+      <p class="search-hint">Discover your next favorite movie</p>
+    </div>
+  </section>
+
+  <!-- Hero Section (with Featured Movie) -->
+  <section id="heroSection" class="hero-section" style="display: none;">
+    <div class="hero-content">
+      <div class="hero-image">
+        <img id="heroImage" src="" alt="Featured Movie" />
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-info">
+        <h2 id="heroTitle"></h2>
+        <div class="hero-rating">
+          <span class="star"><i class="fas fa-star"></i></span>
+          <span id="heroRating"></span>/10
+        </div>
+        <p id="heroOverview"></p>
+        <button class="btn-primary" id="heroFavBtn"><i class="far fa-heart"></i> Add to Favorites</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Loading Spinner -->
+  <div class="loading-spinner" id="loader" style="display: none;">
+    <div class="spinner"></div>
+    <p>Loading amazing movies...</p>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <section id="moviesSection" class="movies-section">
+      <h2 class="section-title" id="sectionTitle">Popular Movies</h2>
+      <div id="movies" class="movie-grid"></div>
+    </section>
+
+    <!-- No Results Message -->
+    <div id="noResults" class="no-results" style="display: none;">
+      <span class="no-results-icon"><i class="fas fa-film"></i></span>
+      <h3>No movies found</h3>
+      <p>Try searching with different keywords</p>
+    </div>
+  </main>
+
+  <!-- Movie Details Modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="closeModal"><i class="fas fa-times"></i></button>
+      <button class="modal-fav-btn" id="modalFavBtn" title="Add to favorites"><i class="far fa-heart"></i></button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Favorites Modal -->
+  <div id="favoritesModal" class="modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content favorites-modal-content">
+      <button class="modal-close" id="closeFavoritesModal"><i class="fas fa-times"></i></button>
+      <h2><i class="fas fa-heart"></i> Your Favorites</h2>
+      <div id="favoritesList" class="favorites-grid"></div>
+      <div id="noFavorites" style="display: none; text-align: center; padding: 40px 20px;">
+        <p style="font-size: 18px; color: #999;">No favorites yet. Start adding movies to your favorites!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>FilmFinder</h4>
+        <p>Your personal movie discovery assistant. Find, save, and explore movies.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Features</h4>
+        <ul>
+          <li><a href="#">Browse Movies</a></li>
+          <li><a href="#">Search</a></li>
+          <li><a href="#">Save Favorites</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Data</h4>
+        <p>Powered by <a href="https://www.themoviedb.org/" target="_blank">The Movie Database (TMDB)</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 FilmFinder. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
